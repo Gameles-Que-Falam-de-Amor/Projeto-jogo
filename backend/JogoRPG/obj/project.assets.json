@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\gabriel.ribeiro\\Desktop\\proj\\Projeto Jogo\\JogoRPG\\JogoRPG.csproj",
+      "projectUniqueName": "C:\\Users\\gabriel.ribeiro\\Desktop\\proj\\Projeto Jogo\\backend\\JogoRPG\\JogoRPG.csproj",
       "projectName": "JogoRPG",
-      "projectPath": "C:\\Users\\gabriel.ribeiro\\Desktop\\proj\\Projeto Jogo\\JogoRPG\\JogoRPG.csproj",
+      "projectPath": "C:\\Users\\gabriel.ribeiro\\Desktop\\proj\\Projeto Jogo\\backend\\JogoRPG\\JogoRPG.csproj",
       "packagesPath": "C:\\Users\\gabriel.ribeiro\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\gabriel.ribeiro\\Desktop\\proj\\Projeto Jogo\\JogoRPG\\obj\\",
+      "outputPath": "C:\\Users\\gabriel.ribeiro\\Desktop\\proj\\Projeto Jogo\\backend\\JogoRPG\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\gabriel.ribeiro\\AppData\\Roaming\\NuGet\\NuGet.Config"

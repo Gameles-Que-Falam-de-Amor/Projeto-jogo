@@ -1,0 +1,14 @@
+C:\Users\gabriel.ribeiro\Desktop\proj\Projeto Jogo\backend\JogoRPG\bin\Debug\net10.0\JogoRPG.exe
+C:\Users\gabriel.ribeiro\Desktop\proj\Projeto Jogo\backend\JogoRPG\bin\Debug\net10.0\JogoRPG.deps.json
+C:\Users\gabriel.ribeiro\Desktop\proj\Projeto Jogo\backend\JogoRPG\bin\Debug\net10.0\JogoRPG.runtimeconfig.json
+C:\Users\gabriel.ribeiro\Desktop\proj\Projeto Jogo\backend\JogoRPG\bin\Debug\net10.0\JogoRPG.dll
+C:\Users\gabriel.ribeiro\Desktop\proj\Projeto Jogo\backend\JogoRPG\bin\Debug\net10.0\JogoRPG.pdb
+C:\Users\gabriel.ribeiro\Desktop\proj\Projeto Jogo\backend\JogoRPG\obj\Debug\net10.0\JogoRPG.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\gabriel.ribeiro\Desktop\proj\Projeto Jogo\backend\JogoRPG\obj\Debug\net10.0\JogoRPG.AssemblyInfoInputs.cache
+C:\Users\gabriel.ribeiro\Desktop\proj\Projeto Jogo\backend\JogoRPG\obj\Debug\net10.0\JogoRPG.AssemblyInfo.cs
+C:\Users\gabriel.ribeiro\Desktop\proj\Projeto Jogo\backend\JogoRPG\obj\Debug\net10.0\JogoRPG.csproj.CoreCompileInputs.cache
+C:\Users\gabriel.ribeiro\Desktop\proj\Projeto Jogo\backend\JogoRPG\obj\Debug\net10.0\JogoRPG.dll
+C:\Users\gabriel.ribeiro\Desktop\proj\Projeto Jogo\backend\JogoRPG\obj\Debug\net10.0\refint\JogoRPG.dll
+C:\Users\gabriel.ribeiro\Desktop\proj\Projeto Jogo\backend\JogoRPG\obj\Debug\net10.0\JogoRPG.pdb
+C:\Users\gabriel.ribeiro\Desktop\proj\Projeto Jogo\backend\JogoRPG\obj\Debug\net10.0\JogoRPG.genruntimeconfig.cache
+C:\Users\gabriel.ribeiro\Desktop\proj\Projeto Jogo\backend\JogoRPG\obj\Debug\net10.0\ref\JogoRPG.dll
