@@ -7,6 +7,14 @@ namespace ChroniclesRPG.Entidades
         // ==========================================
         public string NomeDaClasse => "Guerreiro";
         public int DadoDeVida => 10; // Rola 1d10 para vida, garantindo muito HP
+        public List<TipoArmadura> ProficienciasArmadura => new List<TipoArmadura>{ 
+            TipoArmadura.Leve, TipoArmadura.Media, TipoArmadura.Pesada 
+        };
+        public List<TipoArma> ProficienciasArmas => new List<TipoArma>{ 
+            TipoArma.LaminasCurtas, TipoArma.LaminasLongas, TipoArma.LaminasPesadas,
+            TipoArma.Machados, TipoArma.Impacto, TipoArma.Hastes,
+            TipoArma.Arcos, TipoArma.Bestas, TipoArma.Arremesso
+        };
 
         // ==========================================
         // 2. APLICAÇÃO DOS ATRIBUTOS

@@ -5,7 +5,7 @@ namespace ChroniclesRPG.Entidades
     {
         string NomeDaClasse { get; }
         int DadoDeVida { get; }
-        
+        List<TipoArmadura> ProficienciasArmadura { get; }
         // Contrato: Toda classe terá que dizer como altera a ficha no nível 1
         void AplicarBonusIniciais(FichaPersonagem ficha);
     }

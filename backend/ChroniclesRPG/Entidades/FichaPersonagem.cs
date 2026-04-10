@@ -64,5 +64,19 @@ namespace ChroniclesRPG.Entidades
             HpMaximo = Classe.DadoDeVida + ModificadorConstituicao;
             HpAtual = HpMaximo;
         }
+
+        public void EquiparArmadura(Armadura novaArmadura)
+        {
+            // Verifica se o tipo da armadura nova está na lista de proficiências da classe
+            if (Classe.ProficienciasArmadura.Contains(novaArmadura.Tipo))
+            {
+                ArmaduraVestida = novaArmadura;
+                Console.WriteLine($"{Nome} equipou {novaArmadura.Nome}!");
+            }
+            else
+            {
+                Console.WriteLine($"{Nome} não tem proficiência para usar {novaArmadura.Nome}!");
+            }
+        }
     }
 }
