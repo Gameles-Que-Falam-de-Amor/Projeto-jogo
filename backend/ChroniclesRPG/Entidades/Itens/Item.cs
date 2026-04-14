@@ -1,20 +1,20 @@
-namespace ChroniclesRPG.Entidades
+namespace ChroniclesRPG.Entidades.Itens
 {
     public abstract class Item
     {
-        private string _nome;
-        private string _descricao;
+        private string? _nome;       // Sempre inicializado pelo construtor
+        private string? _descricao;  // Sempre inicializado pelo construtor
         private int _valor;
 
         public string Nome 
         { 
-            get { return _nome; } 
+            get { return _nome ?? string.Empty; } 
             set { _nome = value; } 
         }
         
         public string Descricao 
         { 
-            get { return _descricao; } 
+            get { return _descricao ?? string.Empty; } 
             set { _descricao = value; } 
         }
         

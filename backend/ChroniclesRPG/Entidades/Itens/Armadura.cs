@@ -1,4 +1,4 @@
-namespace ChroniclesRPG.Entidades
+namespace ChroniclesRPG.Entidades.Itens
 {
     public enum TipoArmadura
     {

@@ -1,4 +1,7 @@
-namespace ChroniclesRPG.Entidades
+using ChroniclesRPG.Entidades;
+using ChroniclesRPG.Entidades.Itens;
+
+namespace ChroniclesRPG.Entidades.Classes
 {
     public class Guerreiro : IClasseRPG
     {
