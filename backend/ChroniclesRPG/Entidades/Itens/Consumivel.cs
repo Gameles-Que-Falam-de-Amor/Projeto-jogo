@@ -1,15 +1,13 @@
 using ChroniclesRPG.Entidades;
 
-namespace ChroniclesRPG.Entidades.Itens
-{
-    public class Consumivel : Item
-    {
+namespace ChroniclesRPG.Entidades.Itens{
+    
+    public class Consumivel : Item{
         // Quantidade de HP que este item recupera ao ser usado
         public int Cura { get; set; }
 
         public Consumivel(string nome, string descricao, int valor, int cura) 
-            : base(nome, descricao, valor)
-        {
+            : base(nome, descricao, valor){
             Cura = cura;
         }
 
@@ -18,8 +16,7 @@ namespace ChroniclesRPG.Entidades.Itens
         // ==========================================
 
         // Aplica o efeito do consumível no alvo e remove o item do inventário
-        public void Usar(FichaPersonagem alvo)
-        {
+        public void Usar(FichaPersonagem alvo){
             alvo.HpAtual += Cura;
             
             // Garante que a cura não ultrapasse o HP Máximo
@@ -32,4 +29,4 @@ namespace ChroniclesRPG.Entidades.Itens
             alvo.Inventario.Remove(this);
         }
     }
-}
+}

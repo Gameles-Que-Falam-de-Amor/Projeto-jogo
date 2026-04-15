@@ -1,15 +1,16 @@
 using ChroniclesRPG.Entidades;
 using ChroniclesRPG.Entidades.Itens;
+using ChroniclesRPG.Funções;
 
 namespace ChroniclesRPG.Entidades.Classes
 {
-    public class Guerreiro : IClasseRPG
-    {
+    public class Guerreiro : IClasseRPG{
         // ==========================================
         // 1. CONTRATOS DA INTERFACE
         // ==========================================
         public string NomeDaClasse => "Guerreiro";
-        public int DadoDeVida => 10; // Rola 1d10 para vida, garantindo muito HP
+        public int VidaInicial => 10;
+        public string DadoDeVida => "1d10";
         public List<TipoArmadura> ProficienciasArmadura => new List<TipoArmadura>{ 
             TipoArmadura.Leve, TipoArmadura.Media, TipoArmadura.Pesada 
         };
@@ -22,8 +23,13 @@ namespace ChroniclesRPG.Entidades.Classes
         // ==========================================
         // 2. APLICAÇÃO DOS ATRIBUTOS
         // ==========================================
-        public void AplicarBonusIniciais(FichaPersonagem ficha)
-        {
+
+        public int CalcularVida(){
+            return Dados.Rolar(DadoDeVida);
+        }
+
+        public void AplicarBonusIniciais(FichaPersonagem ficha){
+            
             // Como a ficha começa zerada, a classe Guerreiro vai ditar 
             // a "distribuição padrão" (Standard Array) ideal para ele.
             

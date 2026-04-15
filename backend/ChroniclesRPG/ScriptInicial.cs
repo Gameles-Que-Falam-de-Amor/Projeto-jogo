@@ -2,10 +2,10 @@ using ChroniclesRPG.Entidades;
 using ChroniclesRPG.Entidades.Itens;
 using ChroniclesRPG.Entidades.Classes;
 
-namespace ChroniclesRPG
-{
-    public static class ScriptInicial
-    {
+namespace ChroniclesRPG{
+
+    public static class ScriptInicial{
+
         // ==========================================
         // CATÁLOGOS DE ITENS DO MUNDO
         // ==========================================
@@ -16,8 +16,8 @@ namespace ChroniclesRPG
         public static List<Consumivel> Consumiveis { get; private set; } = new List<Consumivel>();
 
         // Popula os catálogos de itens. Deve ser chamado uma única vez no início do jogo
-        public static void CarregarDados()
-        {
+        public static void CarregarDados(){
+            
             // ==========================================
             // INSTANCIA DE ARMADURAS
             // ==========================================
