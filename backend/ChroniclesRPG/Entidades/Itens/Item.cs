@@ -6,26 +6,22 @@ namespace ChroniclesRPG.Entidades.Itens
         private string? _descricao;  // Sempre inicializado pelo construtor
         private int _valor;
 
-        public string Nome 
-        { 
+        public string Nome { 
             get { return _nome ?? string.Empty; } 
             set { _nome = value; } 
         }
         
-        public string Descricao 
-        { 
+        public string Descricao { 
             get { return _descricao ?? string.Empty; } 
             set { _descricao = value; } 
         }
         
-        public int Valor 
-        { 
+        public int Valor { 
             get { return _valor; } 
             set { _valor = value; } 
         }
 
-        protected Item(string nome, string descricao, int valor)
-        {
+        protected Item(string nome, string descricao, int valor){
             Nome = nome;
             Descricao = descricao;
             Valor = valor;

@@ -1,10 +1,9 @@
 using ChroniclesRPG.Entidades.Itens;
 using ChroniclesRPG.Entidades.Classes;
 
-namespace ChroniclesRPG.Entidades
-{
-    public class FichaPersonagem
-    {
+namespace ChroniclesRPG.Entidades{
+    
+    public class FichaPersonagem{
         // ==========================================
         // INFORMAÇÕES BÁSICAS
         // ==========================================
@@ -54,8 +53,7 @@ namespace ChroniclesRPG.Entidades
         // ==========================================
         // CONSTRUTOR
         // ==========================================
-        public FichaPersonagem(string nome, IClasseRPG classeEscolhida)
-        {
+        public FichaPersonagem(string nome, IClasseRPG classeEscolhida){
             Nome = nome;
             Classe = classeEscolhida;
             
@@ -64,7 +62,7 @@ namespace ChroniclesRPG.Entidades
             Classe.AplicarBonusIniciais(this);
 
             // 2. O HP só é calculado APÓS a classe preencher a Constituição
-            HpMaximo = Classe.DadoDeVida + ModificadorConstituicao;
+            HpMaximo = Classe.VidaInicial + ModificadorConstituicao;
             HpAtual = HpMaximo;
 
             // 3. CA base sem armadura é 10 + o modificador de Destreza
@@ -76,11 +74,9 @@ namespace ChroniclesRPG.Entidades
         // ==========================================
 
         // Equipa uma armadura verificando proficiência e recalculando a CA
-        public void EquiparArmadura(Armadura novaArmadura)
-        {
+        public void EquiparArmadura(Armadura novaArmadura){
             // Verifica se o tipo da armadura nova está na lista de proficiências da classe
-            if (!Classe.ProficienciasArmadura.Contains(novaArmadura.Tipo))
-            {
+            if (!Classe.ProficienciasArmadura.Contains(novaArmadura.Tipo)){
                 Console.WriteLine($"  [ERRO] {Nome} não tem proficiência para usar {novaArmadura.Nome}!");
                 return;
             }
@@ -91,8 +87,7 @@ namespace ChroniclesRPG.Entidades
             // - Leve  → CA = 10 + bônus da armadura + modificador de Destreza completo
             // - Média → CA = 10 + bônus da armadura + modificador de Destreza (máx +2)
             // - Pesada→ CA = 10 + bônus da armadura (sem bônus de Destreza)
-            ClasseArmadura = novaArmadura.Tipo switch
-            {
+            ClasseArmadura = novaArmadura.Tipo switch{
                 TipoArmadura.Leve   => 10 + novaArmadura.BonusDefesa + ModificadorDestreza,
                 TipoArmadura.Media  => 10 + novaArmadura.BonusDefesa + Math.Min(ModificadorDestreza, 2),
                 TipoArmadura.Pesada => 10 + novaArmadura.BonusDefesa,
@@ -102,9 +97,32 @@ namespace ChroniclesRPG.Entidades
             Console.WriteLine($"  {Nome} equipou {novaArmadura.Nome}! (CA ajustada para {ClasseArmadura})");
         }
 
+        // ==========================================
+        // MÉTODOS DE NÍVEIS
+        // ==========================================
+
+        public void GanharXP(int quantidade){
+            XP += quantidade;
+            Console.WriteLine($"  {Nome} ganhou {quantidade} XP! Total: {XP} XP");
+        }
+
+        public void SubirNivel() {
+
+            while (XP >= Nivel * 100) {
+                int XPParaProximoNivel = Nivel * 100;
+                
+                XP -= XPParaProximoNivel;
+                Nivel++; 
+                
+                Console.WriteLine($"{Nome} subiu para o nível {Nivel}!");
+                
+                HpMaximo += Classe.CalcularVida();
+                HpAtual = HpMaximo;
+            }
+        }
+
         // Equipa uma arma verificando a proficiência da classe do personagem
-        public void EquiparArma(Arma novaArma)
-        {
+        public void EquiparArma(Arma novaArma){
             // Verifica se o tipo da arma está na lista de proficiências da classe
             if (!Classe.ProficienciasArmas.Contains(novaArma.Tipo))
             {
@@ -121,8 +139,7 @@ namespace ChroniclesRPG.Entidades
         // ==========================================
 
         // Imprime no console um resumo completo da ficha do personagem
-        public void ExibirStatus()
-        {
+        public void ExibirStatus(){
             // Formata o modificador com sinal de + ou - para legibilidade
             // Exemplo: +3, -1, +0
             string Mod(int m) => m >= 0 ? $"+{m}" : $"{m}";
@@ -160,4 +177,4 @@ namespace ChroniclesRPG.Entidades
             Console.WriteLine();
         }
     }
-}
+}
