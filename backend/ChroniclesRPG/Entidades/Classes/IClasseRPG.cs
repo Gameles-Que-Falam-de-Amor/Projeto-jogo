@@ -23,5 +23,7 @@ namespace ChroniclesRPG.Entidades.Classes
         void AplicarBonusIniciais(FichaPersonagem ficha);
 
         int CalcularVida();
+
+        void AplicarHabilidadesDeNivel(FichaPersonagem ficha, int nivel);
     }
 }

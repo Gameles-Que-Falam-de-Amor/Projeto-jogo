@@ -1,5 +1,6 @@
 using ChroniclesRPG.Entidades.Itens;
 using ChroniclesRPG.Entidades.Classes;
+using ChroniclesRPG.Entidades.Habilidades;
 
 namespace ChroniclesRPG.Entidades{
     
@@ -51,6 +52,20 @@ namespace ChroniclesRPG.Entidades{
         public List<Item> Inventario { get; set; } = new List<Item>();
 
         // ==========================================
+        // HABILIDADES
+        // ==========================================
+        public List<Habilidade> HabilidadesConhecidas { get; set; } = new List<Habilidade>();
+        public Dictionary<int, int> SlotsDeMagia { get; set; } = new Dictionary<int, int>();
+        public void ReceberSlotsDeMagia(int nivelSlot, int quantidade){
+            if (SlotsDeMagia.ContainsKey(nivelSlot)){
+                SlotsDeMagia[nivelSlot] += quantidade;
+            }
+            else{
+                SlotsDeMagia.Add(nivelSlot, quantidade);
+            }
+        }   
+
+        // ==========================================
         // CONSTRUTOR
         // ==========================================
         public FichaPersonagem(string nome, IClasseRPG classeEscolhida){
@@ -67,6 +82,9 @@ namespace ChroniclesRPG.Entidades{
 
             // 3. CA base sem armadura é 10 + o modificador de Destreza
             ClasseArmadura = 10 + ModificadorDestreza;
+
+            // 4. Aplica habilidades do nível 1
+            Classe.AplicarHabilidadesDeNivel(this, Nivel);
         }
 
         // ==========================================
@@ -118,6 +136,8 @@ namespace ChroniclesRPG.Entidades{
                 
                 HpMaximo += Classe.CalcularVida();
                 HpAtual = HpMaximo;
+
+                Classe.AplicarHabilidadesDeNivel(this, Nivel);
             }
         }
 

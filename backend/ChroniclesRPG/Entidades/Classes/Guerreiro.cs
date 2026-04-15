@@ -1,6 +1,7 @@
 using ChroniclesRPG.Entidades;
 using ChroniclesRPG.Entidades.Itens;
 using ChroniclesRPG.Funções;
+using ChroniclesRPG.Entidades.Habilidades;
 
 namespace ChroniclesRPG.Entidades.Classes
 {
@@ -42,6 +43,31 @@ namespace ChroniclesRPG.Entidades.Classes
             ficha.Sabedoria = 12;    // Modificador +1
             ficha.Inteligencia = 10; // Modificador 0
             ficha.Carisma = 8;       // Modificador -1
+        }
+
+        // ==========================================
+        // 3. HABILIDADES DE NÍVEL
+        // ==========================================
+        public void AplicarHabilidadesDeNivel(FichaPersonagem ficha, int nivel){
+            switch (nivel)
+            {
+                case 1:
+                    // No nível 1, ele aprende a bater e a se curar
+                    ficha.HabilidadesConhecidas.Add(new AtaqueBasico());
+                    ficha.HabilidadesConhecidas.Add(new RetomarFolego());
+                    break;
+
+                case 2:
+                    // No nível 2, ele aprenderia o Surto de Ação (Action Surge)
+                    // ficha.HabilidadesConhecidas.Add(new SurtoDeAcao());
+                    Console.WriteLine($"{ficha.Nome} aprendeu uma nova habilidade de nível 2!");
+                    break;
+
+                case 5:
+                    // No nível 5, ele ganharia Ataque Extra
+                    // ficha.HabilidadesConhecidas.Add(new AtaqueExtra());
+                    break;
+            }
         }
     }
 }
