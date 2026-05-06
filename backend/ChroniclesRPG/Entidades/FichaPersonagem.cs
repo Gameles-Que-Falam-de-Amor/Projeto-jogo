@@ -43,6 +43,7 @@ namespace ChroniclesRPG.Entidades{
         public int ClasseArmadura { get; set; }
         public int HpMaximo { get; set; }
         public int HpAtual { get; set; }
+        public int MargemCritico { get; set; } = 20; // 20 é o padrão para acerto crítico
 
         // ==========================================
         // ITENS 
@@ -54,8 +55,10 @@ namespace ChroniclesRPG.Entidades{
         // ==========================================
         // HABILIDADES
         // ==========================================
+
         public List<Habilidade> HabilidadesConhecidas { get; set; } = new List<Habilidade>();
         public Dictionary<int, int> SlotsDeMagia { get; set; } = new Dictionary<int, int>();
+
         public void ReceberSlotsDeMagia(int nivelSlot, int quantidade){
             if (SlotsDeMagia.ContainsKey(nivelSlot)){
                 SlotsDeMagia[nivelSlot] += quantidade;
@@ -63,7 +66,15 @@ namespace ChroniclesRPG.Entidades{
             else{
                 SlotsDeMagia.Add(nivelSlot, quantidade);
             }
-        }   
+        }
+
+        // ==========================================
+        // HABILIDADES DE CLASSES
+        // ==========================================
+        public int ReservaCuraPelasMaos { get; set; } = 0; // Paladino - Curar pelas Mãos
+        public int UsosSurtoDeAcao { get; set; } = 0; // Guerreiro - Surto de Ação
+        public int AcoesExtras { get; set; } = 0; // Guerreiro - Ações Extras
+        public int NumeroDeAtaques { get; set; } = 1; // Padrão é 1 ataque por ação
 
         // ==========================================
         // CONSTRUTOR
@@ -154,6 +165,10 @@ namespace ChroniclesRPG.Entidades{
             Console.WriteLine($"  {Nome} equipou {novaArma.Nome}! ({novaArma.DadoDeDano} de dano {novaArma.TipoDano})");
         }
 
+
+
+        // ==========================================
+        // APENAS PARA TESTES
         // ==========================================
         // MÉTODO DE EXIBIÇÃO
         // ==========================================

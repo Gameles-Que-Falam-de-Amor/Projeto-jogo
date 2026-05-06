@@ -49,23 +49,47 @@ namespace ChroniclesRPG.Entidades.Classes
         // 3. HABILIDADES DE NÍVEL
         // ==========================================
         public void AplicarHabilidadesDeNivel(FichaPersonagem ficha, int nivel){
-            switch (nivel)
-            {
+            switch (nivel){
                 case 1:
-                    // No nível 1, ele aprende a bater e a se curar
+                    // Nível 1: Ataque Básico + Retomar o Fôlego + Estilo de Luta
                     ficha.HabilidadesConhecidas.Add(new AtaqueBasico());
                     ficha.HabilidadesConhecidas.Add(new RetomarFolego());
+                    // Estilo de Luta padrão — futuramente pode ser escolhido pelo jogador
+                    //ficha.HabilidadesConhecidas.Add(new EstiloDeLuta(EstiloLuta.Duelismo));
+                    Console.WriteLine($"  {ficha.Nome} aprendeu: Ataque Básico, Retomar o Fôlego e Estilo de Luta (Duelismo)!");
                     break;
 
                 case 2:
-                    // No nível 2, ele aprenderia o Surto de Ação (Action Surge)
-                    // ficha.HabilidadesConhecidas.Add(new SurtoDeAcao());
-                    Console.WriteLine($"{ficha.Nome} aprendeu uma nova habilidade de nível 2!");
+                    // Nível 2: Surto de Ação
+                    ficha.HabilidadesConhecidas.Add(new SurtoDeAcao());
+                    ficha.UsosSurtoDeAcao = 1; // 1 uso a partir do nível 2
+                    Console.WriteLine($"  {ficha.Nome} aprendeu: Surto de Ação!");
+                    break;
+
+                case 3:
+                    // Nível 3: Arquétipo Marcial — Campeão ganha Crítico Aprimorado
+                    ficha.HabilidadesConhecidas.Add(new ArquetipoMarcial());
+                    //ficha.MargemCritico = 19; // Crítico agora ocorre com 19 ou 20
+                    Console.WriteLine($"  {ficha.Nome} escolheu o arquétipo Campeão e aprendeu: Crítico Aprimorado!");
+                    break;
+
+                case 4:
+                    // Nível 4: Aumento de Atributo (Feat/Aumento de Atributo)
+                    ficha.Forca += 2; 
+                    Console.WriteLine($"  A Força de {ficha.Nome} aumentou para {ficha.Forca}!");
                     break;
 
                 case 5:
-                    // No nível 5, ele ganharia Ataque Extra
-                    // ficha.HabilidadesConhecidas.Add(new AtaqueExtra());
+                    // Nível 5: Ataque Extra
+                    ficha.HabilidadesConhecidas.Add(new AtaqueExtra());
+                    ficha.NumeroDeAtaques = 2; // Passa a realizar 2 ataques por ação de ataque
+                    Console.WriteLine($"  {ficha.Nome} aprendeu: Ataque Extra!");
+                    break;
+
+                case 6:
+                    // Nível 6: Aumento de Atributo (Feat/Aumento de Atributo)
+                    ficha.Forca += 2; 
+                    Console.WriteLine($"  A Força de {ficha.Nome} aumentou para {ficha.Forca}!");
                     break;
             }
         }

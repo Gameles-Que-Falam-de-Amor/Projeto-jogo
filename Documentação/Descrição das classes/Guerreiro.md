@@ -117,5 +117,3 @@ O arquétipo Campeão foca no desenvolvimento da força física pura combinada c
 A partir do 3º nível, seus ataques com armas passam a causar acerto crítico com resultados de **19 a 20** nas jogadas de ataque.
 
 ---
-
-## Paladino
