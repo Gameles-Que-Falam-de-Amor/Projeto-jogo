@@ -1,4 +1,5 @@
 namespace ChroniclesRPG.Entidades.Habilidades{
+    
     public enum TipoHabilidade
     {
         AtaqueFisico,       // Usa a arma equipada

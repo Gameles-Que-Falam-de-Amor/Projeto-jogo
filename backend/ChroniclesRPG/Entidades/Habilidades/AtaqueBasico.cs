@@ -19,83 +19,78 @@ namespace ChroniclesRPG.Entidades.Habilidades{
                 return 0;
             }
 
-            // ==========================================
-            // PASSO 1: ESCOLHER O ATRIBUTO DE ATAQUE
-            // ==========================================
-            // Armas com UsaDestreza (adagas, arcos, armas finesse) usam o maior entre FOR e DEX.
-            // Armas normais de corpo a corpo sempre usam Força.
-            // Armas de alcance (Arcos, Bestas, Arremesso) sempre usam Destreza.
+            int danoTotalTurno = 0;
 
-            bool ehArmaDeAlcance = usuario.ArmaEquipada.Tipo == TipoArma.Arcos 
-                                || usuario.ArmaEquipada.Tipo == TipoArma.Bestas
-                                || usuario.ArmaEquipada.Tipo == TipoArma.Arremesso;
+            for (int i = 1; i <= usuario.NumeroDeAtaques; i++){
+                if (usuario.NumeroDeAtaques > 1){
+                    Console.WriteLine($"\n  --- Ataque {i} de {usuario.NumeroDeAtaques} ---");
+                }
 
-            int modificadorDeAtaque;
+                // ==========================================
+                // PASSO 1: ESCOLHER O ATRIBUTO DE ATAQUE
+                // ==========================================
+                bool ehArmaDeAlcance = usuario.ArmaEquipada.Tipo == TipoArma.Arcos 
+                                    || usuario.ArmaEquipada.Tipo == TipoArma.Bestas
+                                    || usuario.ArmaEquipada.Tipo == TipoArma.Arremesso;
 
-            if (ehArmaDeAlcance){
-                // Armas de alcance sempre usam Destreza
-                modificadorDeAtaque = usuario.ModificadorDestreza;
-            } else if (usuario.ArmaEquipada.UsaDestreza){
-                // Armas "finesse" (ex: adaga, rapieira): usa o MAIOR entre FOR e DEX
-                modificadorDeAtaque = Math.Max(usuario.ModificadorForca, usuario.ModificadorDestreza);
-            } else {
-                // Armas corpo a corpo normais: usa Força
-                modificadorDeAtaque = usuario.ModificadorForca;
+                int modificadorDeAtaque;
+
+                if (ehArmaDeAlcance){
+                    modificadorDeAtaque = usuario.ModificadorDestreza;
+                } else if (usuario.ArmaEquipada.UsaDestreza){
+                    modificadorDeAtaque = Math.Max(usuario.ModificadorForca, usuario.ModificadorDestreza);
+                } else {
+                    modificadorDeAtaque = usuario.ModificadorForca;
+                }
+
+                // ==========================================
+                // PASSO 2: ROLAR O D20 DE ACERTO
+                // ==========================================
+                int rolagem = Dados.RolarD20();
+                int totalDeAtaque = rolagem + modificadorDeAtaque;
+
+                string nomeAtributo = ehArmaDeAlcance || usuario.ArmaEquipada.UsaDestreza && usuario.ModificadorDestreza > usuario.ModificadorForca 
+                    ? "DEX" : "FOR";
+
+                Console.WriteLine($"  {usuario.Nome} ataca {alvo.Nome} com {usuario.ArmaEquipada.Nome}!");
+                Console.WriteLine($"    Rolagem de acerto: 1d20({rolagem}) + {nomeAtributo}({modificadorDeAtaque:+#;-#;+0}) = {totalDeAtaque} vs CA {alvo.ClasseArmadura}");
+
+                // ==========================================
+                // PASSO 3: COMPARAR COM A CA DO ALVO
+                // ==========================================
+                if (rolagem >= usuario.MargemCritico){
+                    int dano1 = Dados.Rolar(usuario.ArmaEquipada.DadoDeDano);
+                    int dano2 = Dados.Rolar(usuario.ArmaEquipada.DadoDeDano);
+                    int danoTotal = dano1 + dano2 + modificadorDeAtaque;
+
+                    alvo.HpAtual -= danoTotal;
+                    Console.WriteLine($"    ACERTO CRÍTICO! Dano: {dano1}+{dano2}+{modificadorDeAtaque} = {danoTotal} ({usuario.ArmaEquipada.TipoDano})");
+                    Console.WriteLine($"    HP de {alvo.Nome}: {alvo.HpAtual}/{alvo.HpMaximo}");
+                    danoTotalTurno += danoTotal;
+                }
+                else if (rolagem == 1){
+                    Console.WriteLine($"    ERRO CRÍTICO! O ataque falha completamente.");
+                }
+                else if (totalDeAtaque >= alvo.ClasseArmadura){
+                    int dano = Dados.Rolar(usuario.ArmaEquipada.DadoDeDano) + modificadorDeAtaque;
+                    dano = Math.Max(1, dano);
+
+                    alvo.HpAtual -= dano;
+                    Console.WriteLine($"    ACERTOU! Dano: {dano} ({usuario.ArmaEquipada.TipoDano})");
+                    Console.WriteLine($"    HP de {alvo.Nome}: {alvo.HpAtual}/{alvo.HpMaximo}");
+                    danoTotalTurno += dano;
+                } else {
+                    Console.WriteLine($"    ERROU! O ataque não penetrou a defesa do alvo.");
+                }
+
+                // Interrompe os ataques se o alvo já foi derrotado
+                if (alvo.HpAtual <= 0){
+                    Console.WriteLine($"\n  O {alvo.Nome} foi derrotado!");
+                    break;
+                }
             }
 
-            // ==========================================
-            // PASSO 2: ROLAR O D20 DE ACERTO
-            // ==========================================
-            // Fórmula: 1d20 + modificador de atributo
-            // (Bônus de proficiência pode ser adicionado aqui futuramente)
-
-            int rolagem = Dados.RolarD20();
-            int totalDeAtaque = rolagem + modificadorDeAtaque;
-
-            // Apenas para exibição no console
-            string nomeAtributo = ehArmaDeAlcance || usuario.ArmaEquipada.UsaDestreza && usuario.ModificadorDestreza > usuario.ModificadorForca 
-                ? "DEX" : "FOR";
-
-            Console.WriteLine($"  {usuario.Nome} ataca {alvo.Nome} com {usuario.ArmaEquipada.Nome}!");
-            Console.WriteLine($"    Rolagem de acerto: 1d20({rolagem}) + {nomeAtributo}({modificadorDeAtaque:+#;-#;+0}) = {totalDeAtaque} vs CA {alvo.ClasseArmadura}");
-            //---------------------------
-
-            // ==========================================
-            // PASSO 3: COMPARAR COM A CA DO ALVO
-            // ==========================================
-
-            // Acerto crítico (nat 20): sempre acerta e rola o dado de dano duas vezes
-            if (rolagem == 20){
-                int dano1 = Dados.Rolar(usuario.ArmaEquipada.DadoDeDano);
-                int dano2 = Dados.Rolar(usuario.ArmaEquipada.DadoDeDano);
-                int danoTotal = dano1 + dano2 + modificadorDeAtaque;
-
-                alvo.HpAtual -= danoTotal;
-                Console.WriteLine($"    ACERTO CRÍTICO! Dano: {dano1}+{dano2}+{modificadorDeAtaque} = {danoTotal} ({usuario.ArmaEquipada.TipoDano})");
-                Console.WriteLine($"    HP de {alvo.Nome}: {alvo.HpAtual}/{alvo.HpMaximo}");
-                return danoTotal;
-            }
-
-            // Erro crítico (nat 1): sempre erra, independente de bônus
-            if (rolagem == 1){
-                Console.WriteLine($"    ERRO CRÍTICO! O ataque falha completamente.");
-                return 0;
-            }
-
-            // Acerto normal: total precisa ser >= CA do alvo
-            if (totalDeAtaque >= alvo.ClasseArmadura){
-                int dano = Dados.Rolar(usuario.ArmaEquipada.DadoDeDano) + modificadorDeAtaque;
-                // O dano mínimo é sempre 1, mesmo com modificador negativo
-                dano = Math.Max(1, dano);
-
-                alvo.HpAtual -= dano;
-                Console.WriteLine($"    ACERTOU! Dano: {dano} ({usuario.ArmaEquipada.TipoDano})");
-                Console.WriteLine($"    HP de {alvo.Nome}: {alvo.HpAtual}/{alvo.HpMaximo}");
-                return dano;
-            } else {
-                Console.WriteLine($"    ERROU! O ataque não penetrou a defesa do alvo.");
-                return 0;
-            }
+            return danoTotalTurno;
         }
     }
 }
