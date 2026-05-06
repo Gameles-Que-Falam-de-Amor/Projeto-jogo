@@ -104,6 +104,40 @@ namespace ChroniclesRPG.Entidades{
         public bool ProximoAtaqueTrovejante { get; set; } = false;
         public bool TemArmaMagica { get; set; } = false;
 
+        // Mago - Escola de Abjuração
+        public int HpEscudoArcano { get; set; } = 0;       // Proteção Arcana: absorve dano antes do HP
+        public int HpMaxEscudoArcano { get; set; } = 0;    // Máximo do escudo (recalculado ao ativar)
+        public bool TemVantagemProximoAtaque { get; set; } = false; // Truque Ataque Certeiro
+        public bool TemResistenciaFisica { get; set; } = false;     // Truque Proteção contra Lâminas
+
+        // Método auxiliar: aplica dano ao escudo primeiro, depois ao HP
+        // Também trata resistência física (Proteção contra Lâminas do Mago)
+        public int ReceberDano(int dano, bool ehDanoFisico = true){
+            // Resistência: divide o dano por 2 (arredonda pra baixo, mínimo 1)
+            if (ehDanoFisico && TemResistenciaFisica){
+                int danoOriginal = dano;
+                dano = Math.Max(1, dano / 2);
+                Console.WriteLine($"    [Resistência Física] Dano reduzido de {danoOriginal} para {dano}!");
+            }
+
+            if (HpEscudoArcano > 0){
+                int excedente = dano - HpEscudoArcano;
+                HpEscudoArcano -= dano;
+                if (HpEscudoArcano < 0) HpEscudoArcano = 0;
+
+                if (excedente > 0){
+                    HpAtual -= excedente;
+                    Console.WriteLine($"    O Escudo Arcano absorveu parte do dano! ({dano - excedente} bloqueado, {excedente} passa para o HP) [Escudo: {HpEscudoArcano}/{HpMaxEscudoArcano}]");
+                } else {
+                    Console.WriteLine($"    O Escudo Arcano absorveu todo o dano! ({dano} bloqueado) [Escudo: {HpEscudoArcano}/{HpMaxEscudoArcano}]");
+                }
+                return excedente > 0 ? excedente : 0;
+            }
+
+            HpAtual -= dano;
+            return dano;
+        }
+
         // ==========================================
         // CONSTRUTOR
         // ==========================================

@@ -47,7 +47,7 @@ namespace ChroniclesRPG.Entidades.Habilidades{
                 int danoRadiante = Dados.Rolar("2d8") + Dados.Rolar("2d8"); // Crítico dobra os dados do Smite também
                 int danoTotal = danoBase + danoRadiante + modificadorDeAtaque;
 
-                alvo.HpAtual -= danoTotal;
+                alvo.ReceberDano(danoTotal);
                 Console.WriteLine($"    ACERTO CRÍTICO SAGRADO! Dano da Arma: {danoBase}+{modificadorDeAtaque} | Dano Radiante: {danoRadiante} | Total: {danoTotal}");
                 return danoTotal;
             }
@@ -60,7 +60,7 @@ namespace ChroniclesRPG.Entidades.Habilidades{
                 int danoRadiante = Dados.Rolar("2d8"); 
                 int danoTotal = danoBase + danoRadiante + modificadorDeAtaque;
 
-                alvo.HpAtual -= danoTotal;
+                alvo.ReceberDano(danoTotal);
                 Console.WriteLine($"    ACERTOU! Dano da Arma: {danoBase}+{modificadorDeAtaque} | Dano Radiante: {danoRadiante} | Total: {danoTotal}");
                 return danoTotal;
             } else {
