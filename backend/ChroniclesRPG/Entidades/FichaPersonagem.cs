@@ -68,13 +68,41 @@ namespace ChroniclesRPG.Entidades{
             }
         }
 
+        public bool GastarSlotDeMagia(int nivelDesejado)
+        {
+            if (SlotsDeMagia.ContainsKey(nivelDesejado) && SlotsDeMagia[nivelDesejado] > 0)
+            {
+                SlotsDeMagia[nivelDesejado]--;
+                return true;
+            }
+            // Verifica se tem slots superiores caso o exato não tenha
+            foreach (var slot in SlotsDeMagia.Keys.OrderBy(k => k))
+            {
+                if (slot > nivelDesejado && SlotsDeMagia[slot] > 0)
+                {
+                    SlotsDeMagia[slot]--;
+                    return true;
+                }
+            }
+            return false;
+        }
+
         // ==========================================
-        // HABILIDADES DE CLASSES
+        // HABILIDADES DE CLASSES E BUFFS
         // ==========================================
         public int ReservaCuraPelasMaos { get; set; } = 0; // Paladino - Curar pelas Mãos
         public int UsosSurtoDeAcao { get; set; } = 0; // Guerreiro - Surto de Ação
         public int AcoesExtras { get; set; } = 0; // Guerreiro - Ações Extras
         public int NumeroDeAtaques { get; set; } = 1; // Padrão é 1 ataque por ação
+        
+        public int UsosCanalizarDivindade { get; set; } = 0; // Paladino - Canalizar Divindade
+        public int OndaVitalidadeTurnosRestantes { get; set; } = 0; // Cura progressiva do Paladino
+        
+        // Buffs Temporários (Simplificação para as magias do Paladino)
+        public bool TemBencao { get; set; } = false;
+        public bool TemEscudoDaFe { get; set; } = false;
+        public bool ProximoAtaqueTrovejante { get; set; } = false;
+        public bool TemArmaMagica { get; set; } = false;
 
         // ==========================================
         // CONSTRUTOR

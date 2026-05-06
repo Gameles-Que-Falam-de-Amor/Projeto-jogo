@@ -47,13 +47,22 @@ namespace ChroniclesRPG.Entidades.Habilidades{
                 // PASSO 2: ROLAR O D20 DE ACERTO
                 // ==========================================
                 int rolagem = Dados.RolarD20();
-                int totalDeAtaque = rolagem + modificadorDeAtaque;
+
+                // Aplica bônus de buffs
+                int bonusAtaqueMagico = usuario.TemArmaMagica ? 1 : 0;
+                int bonusBencao = usuario.TemBencao ? Dados.Rolar("1d4") : 0;
+                
+                int totalDeAtaque = rolagem + modificadorDeAtaque + bonusAtaqueMagico + bonusBencao;
 
                 string nomeAtributo = ehArmaDeAlcance || usuario.ArmaEquipada.UsaDestreza && usuario.ModificadorDestreza > usuario.ModificadorForca 
                     ? "DEX" : "FOR";
 
                 Console.WriteLine($"  {usuario.Nome} ataca {alvo.Nome} com {usuario.ArmaEquipada.Nome}!");
-                Console.WriteLine($"    Rolagem de acerto: 1d20({rolagem}) + {nomeAtributo}({modificadorDeAtaque:+#;-#;+0}) = {totalDeAtaque} vs CA {alvo.ClasseArmadura}");
+                string msgAtaque = $"    Rolagem de acerto: 1d20({rolagem}) + {nomeAtributo}({modificadorDeAtaque:+#;-#;+0})";
+                if (bonusAtaqueMagico > 0) msgAtaque += $" + Arma Mágica(+1)";
+                if (bonusBencao > 0) msgAtaque += $" + Bênção(+{bonusBencao})";
+                msgAtaque += $" = {totalDeAtaque} vs CA {alvo.ClasseArmadura}";
+                Console.WriteLine(msgAtaque);
 
                 // ==========================================
                 // PASSO 3: COMPARAR COM A CA DO ALVO
@@ -61,24 +70,47 @@ namespace ChroniclesRPG.Entidades.Habilidades{
                 if (rolagem >= usuario.MargemCritico){
                     int dano1 = Dados.Rolar(usuario.ArmaEquipada.DadoDeDano);
                     int dano2 = Dados.Rolar(usuario.ArmaEquipada.DadoDeDano);
-                    int danoTotal = dano1 + dano2 + modificadorDeAtaque;
+                    int danoBaseTotal = dano1 + dano2 + modificadorDeAtaque + bonusAtaqueMagico;
+                    
+                    int danoTrovejante = 0;
+                    if (usuario.ProximoAtaqueTrovejante) {
+                        danoTrovejante = Dados.Rolar("2d6") + Dados.Rolar("2d6"); // Crítico dobra também
+                        usuario.ProximoAtaqueTrovejante = false;
+                    }
 
+                    int danoTotal = danoBaseTotal + danoTrovejante;
                     alvo.HpAtual -= danoTotal;
-                    Console.WriteLine($"    ACERTO CRÍTICO! Dano: {dano1}+{dano2}+{modificadorDeAtaque} = {danoTotal} ({usuario.ArmaEquipada.TipoDano})");
+
+                    string msgDano = $"    ACERTO CRÍTICO! Dano da Arma: {danoBaseTotal} ({usuario.ArmaEquipada.TipoDano})";
+                    if (danoTrovejante > 0) msgDano += $" | Dano Trovejante: {danoTrovejante}";
+                    
+                    Console.WriteLine(msgDano);
                     Console.WriteLine($"    HP de {alvo.Nome}: {alvo.HpAtual}/{alvo.HpMaximo}");
                     danoTotalTurno += danoTotal;
                 }
                 else if (rolagem == 1){
                     Console.WriteLine($"    ERRO CRÍTICO! O ataque falha completamente.");
+                    // O ataque trovejante não gasta no erro crítico, fica pro próximo ataque.
                 }
                 else if (totalDeAtaque >= alvo.ClasseArmadura){
-                    int dano = Dados.Rolar(usuario.ArmaEquipada.DadoDeDano) + modificadorDeAtaque;
+                    int dano = Dados.Rolar(usuario.ArmaEquipada.DadoDeDano) + modificadorDeAtaque + bonusAtaqueMagico;
                     dano = Math.Max(1, dano);
 
-                    alvo.HpAtual -= dano;
-                    Console.WriteLine($"    ACERTOU! Dano: {dano} ({usuario.ArmaEquipada.TipoDano})");
+                    int danoTrovejante = 0;
+                    if (usuario.ProximoAtaqueTrovejante) {
+                        danoTrovejante = Dados.Rolar("2d6");
+                        usuario.ProximoAtaqueTrovejante = false;
+                    }
+
+                    int danoTotal = dano + danoTrovejante;
+                    alvo.HpAtual -= danoTotal;
+
+                    string msgDano = $"    ACERTOU! Dano da Arma: {dano} ({usuario.ArmaEquipada.TipoDano})";
+                    if (danoTrovejante > 0) msgDano += $" | Dano Trovejante: {danoTrovejante}";
+
+                    Console.WriteLine(msgDano);
                     Console.WriteLine($"    HP de {alvo.Nome}: {alvo.HpAtual}/{alvo.HpMaximo}");
-                    danoTotalTurno += dano;
+                    danoTotalTurno += danoTotal;
                 } else {
                     Console.WriteLine($"    ERROU! O ataque não penetrou a defesa do alvo.");
                 }
