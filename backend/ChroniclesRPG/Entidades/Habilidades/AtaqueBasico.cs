@@ -79,14 +79,14 @@ namespace ChroniclesRPG.Entidades.Habilidades{
                     }
 
                     int danoTotal = danoBaseTotal + danoTrovejante;
-                    alvo.HpAtual -= danoTotal;
+                    int danoEfetivo = alvo.ReceberDano(danoTotal);
 
                     string msgDano = $"    ACERTO CRÍTICO! Dano da Arma: {danoBaseTotal} ({usuario.ArmaEquipada.TipoDano})";
                     if (danoTrovejante > 0) msgDano += $" | Dano Trovejante: {danoTrovejante}";
                     
                     Console.WriteLine(msgDano);
                     Console.WriteLine($"    HP de {alvo.Nome}: {alvo.HpAtual}/{alvo.HpMaximo}");
-                    danoTotalTurno += danoTotal;
+                    danoTotalTurno += danoEfetivo;
                 }
                 else if (rolagem == 1){
                     Console.WriteLine($"    ERRO CRÍTICO! O ataque falha completamente.");
@@ -103,14 +103,14 @@ namespace ChroniclesRPG.Entidades.Habilidades{
                     }
 
                     int danoTotal = dano + danoTrovejante;
-                    alvo.HpAtual -= danoTotal;
+                    int danoEfetivo = alvo.ReceberDano(danoTotal);
 
                     string msgDano = $"    ACERTOU! Dano da Arma: {dano} ({usuario.ArmaEquipada.TipoDano})";
                     if (danoTrovejante > 0) msgDano += $" | Dano Trovejante: {danoTrovejante}";
 
                     Console.WriteLine(msgDano);
                     Console.WriteLine($"    HP de {alvo.Nome}: {alvo.HpAtual}/{alvo.HpMaximo}");
-                    danoTotalTurno += danoTotal;
+                    danoTotalTurno += danoEfetivo;
                 } else {
                     Console.WriteLine($"    ERROU! O ataque não penetrou a defesa do alvo.");
                 }

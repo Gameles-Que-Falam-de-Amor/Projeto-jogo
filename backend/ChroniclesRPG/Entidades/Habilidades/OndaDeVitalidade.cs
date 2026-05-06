@@ -1,7 +1,7 @@
 namespace ChroniclesRPG.Entidades.Habilidades{
     public class OndaDeVitalidade : Habilidade{
         public OndaDeVitalidade() 
-            : base("Onda de Vitalidade", "Canaliza a divindade para curar aliados ao longo do tempo (3 turnos).", TipoAcao.AcaoPrincipal, TipoHabilidade.CaracteristicaClasse) 
+            : base("Onda de Vitalidade", "Canaliza a divindade para curar aliados ao longo do tempo (3 turnos).", TipoAcao.AcaoBonus, TipoHabilidade.CaracteristicaClasse) 
         { }
 
         public override int Executar(FichaPersonagem usuario, FichaPersonagem? alvo = null){
