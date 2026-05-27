@@ -3,6 +3,7 @@ using ChroniclesRPG.Entidades;
 using ChroniclesRPG.Entidades.Itens;
 using ChroniclesRPG.Entidades.Classes;
 using ChroniclesRPG.Entidades.Habilidades;
+using ChroniclesRPG.Entidades.Inimigos;
 using ChroniclesRPG.Combate;
 
 Console.OutputEncoding = System.Text.Encoding.UTF8;
@@ -54,6 +55,7 @@ Console.WriteLine("════════════════════�
 
 Console.WriteLine("1. Teste completo(2 rodadas testando diferentes habilidades)");
 Console.WriteLine("2. Teste de loop(ate um dos adversarios morrer)");
+Console.WriteLine("3. Modo Campanha (20 estagios — personagem novo, nivel 1)");
 
 int menu = Convert.ToInt32(Console.ReadLine());
 
@@ -226,6 +228,58 @@ switch (menu)
         Console.WriteLine("╚══════════════════════════════════════════════════════════╝");
         magnus.ExibirStatus();
         arthur.ExibirStatus();
+    }
+    break;
+
+    case 3:
+    {
+        Console.WriteLine("══════════════════════════════════════════════════════════════");
+        Console.WriteLine("                    MODO CAMPANHA — Escolha sua Classe");
+        Console.WriteLine("══════════════════════════════════════════════════════════════");
+        Console.WriteLine("1. Guerreiro  — Especialista em combate físico corpo a corpo.");
+        Console.WriteLine("2. Paladino   — Guerreiro sagrado com magias de suporte e cura.");
+        Console.WriteLine("3. Mago       — Conjurador arcano com truques e magias poderosas.");
+        Console.Write("\nEscolha sua classe (1-3): ");
+
+
+        int classeEscolhida = Convert.ToInt32(Console.ReadLine());
+
+        IClasseRPG classeRpg = classeEscolhida switch {
+            1 => new Guerreiro(),
+            2 => new Paladino(),
+            3 => new Mago(),
+            _ => new Guerreiro()
+        };
+
+        Console.Write("\nDigite o nome do seu personagem: ");
+        string nomeHeroi = Console.ReadLine() ?? "Herói";
+        if (string.IsNullOrWhiteSpace(nomeHeroi)) nomeHeroi = "Herói";
+
+        // Cria o personagem de nível 1
+        FichaPersonagem heroi = new FichaPersonagem(nomeHeroi, classeRpg);
+
+        // Equipa arma e armadura iniciais de acordo com a classe escolhida
+        switch (classeEscolhida)
+        {
+            case 1: // Guerreiro
+                heroi.EquiparArmadura(ScriptInicial.Armaduras.Find(a => a.Nome == "Cota de Malha")!);
+                heroi.EquiparArma(ScriptInicial.Armas.Find(a => a.Nome == "Espada Longa")!);
+                break;
+            case 2: // Paladino
+                heroi.EquiparArmadura(ScriptInicial.Armaduras.Find(a => a.Nome == "Cota de Talas")!);
+                heroi.EquiparArma(ScriptInicial.Armas.Find(a => a.Nome == "Espada Longa")!);
+                break;
+            case 3: // Mago
+                heroi.EquiparArmadura(ScriptInicial.Armaduras.Find(a => a.Nome == "Armadura Acolchoada")!);
+                heroi.EquiparArma(ScriptInicial.Armas.Find(a => a.Nome == "Cajado de Mago")!);
+                break;
+        }
+
+        heroi.ExibirStatus();
+
+        // Inicia a campanha com o controlador de estágios
+        var campanha = new ControladorDeEstagio(heroi, estagioInicial: 1);
+        campanha.IniciarCampanha();
     }
     break;
 
