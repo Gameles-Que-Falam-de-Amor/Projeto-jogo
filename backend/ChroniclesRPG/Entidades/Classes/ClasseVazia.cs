@@ -4,27 +4,21 @@ using ChroniclesRPG.Entidades.Itens;
 namespace ChroniclesRPG.Entidades.Classes
 {
     /// <summary>
-    /// Implementação nula de IClasseRPG usada pelo ControladorDeEstagio para criar
-    /// FichaPersonagem proxies que representam inimigos no sistema de habilidades.
-    ///
-    /// O sistema de Habilidades (AtaqueBasico, DestruicaoDivina, etc.) espera uma
-    /// FichaPersonagem como alvo — esta classe permite criar uma ficha "vazia" a
-    /// partir dos atributos brutos do FichaInimigo sem aplicar nenhum bônus de classe.
+    /// Implementação mínima de IClasseRPG usada para criar FichaPersonagem de proxy
+    /// (espelho de FichaInimigo). Não é uma classe jogável — apenas permite instanciar
+    /// uma FichaPersonagem sem lógica de progressão.
     /// </summary>
-    internal class ClasseVazia : IClasseRPG
+    public class ClasseVazia : IClasseRPG
     {
-        public string NomeDaClasse              => "—";
-        public int    VidaInicial               => 0;
-        public string DadoDeVida                => "1d4";
+        public string NomeDaClasse => "Inimigo";
+        public string DadoDeVida  => "1d1";
+        public int    VidaInicial => 0;
+
         public List<TipoArmadura> ProficienciasArmadura => new();
-        public List<TipoArma>    ProficienciasArmas     => new();
+        public List<TipoArma>     ProficienciasArmas     => new();
 
-        public int CalcularVida() => 0;
-
-        /// <summary>Intencional: nenhum bônus aplicado — os atributos são definidos manualmente pelo proxy.</summary>
-        public void AplicarBonusIniciais(FichaPersonagem ficha) { }
-
-        /// <summary>Intencional: nenhuma habilidade concedida — o proxy não usa o sistema de habilidades do jogador.</summary>
-        public void AplicarHabilidadesDeNivel(FichaPersonagem ficha, int nivel) { }
+        public void AplicarBonusIniciais(FichaPersonagem ficha) { /* sem bônus */ }
+        public int  CalcularVida() => 0;
+        public void AplicarHabilidadesDeNivel(FichaPersonagem ficha, int nivel) { /* sem habilidades */ }
     }
 }

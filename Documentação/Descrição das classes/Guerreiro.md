@@ -28,6 +28,17 @@ Como um guerreiro, você adquire as seguintes características de classe:
 
 ---
 
+### Atributos Iniciais
+
+- **Força:** 16 (+3)
+- **Constituição:** 15 (+2)
+- **Destreza:** 13 (+1)
+- **Sabedoria:** 12 (+1)
+- **Inteligência:** 10 (+0)
+- **Carisma:** 8 (-1)
+
+---
+
 ### Progressão
 
 | Nível | Bônus de Proficiência | Características |

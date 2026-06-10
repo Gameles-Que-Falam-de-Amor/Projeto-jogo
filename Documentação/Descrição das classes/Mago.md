@@ -28,6 +28,17 @@ Como um mago, você adquire as seguintes características de classe.
 
 ---
 
+### Atributos Iniciais
+
+- **Inteligência:** 16 (+3)
+- **Destreza:** 15 (+2)
+- **Constituição:** 14 (+2)
+- **Sabedoria:** 12 (+1)
+- **Carisma:** 10 (+0)
+- **Força:** 8 (-1)
+
+---
+
 ### Progressão
 
 | Nível | Bônus de Proficiência | Características |

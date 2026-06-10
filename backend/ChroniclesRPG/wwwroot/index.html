@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chronicles RPG — Floresta das Sombras</title>
+  <meta name="description" content="RPG de turno baseado em D&D 5e. Escolha sua classe, enfrente 20 estágios e derrote o Lich Primordial." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     TELA 1 — INTRO
+═══════════════════════════════════════════════════════════════ -->
+<section class="screen active" id="screen-intro">
+  <div class="intro-bg"></div>
+  <div class="intro-mist"></div>
+  <div class="intro-content">
+    <div class="intro-emblem" aria-hidden="true">⚔</div>
+    <h1 class="intro-title">Chronicles<br><span>RPG</span></h1>
+    <p class="intro-subtitle">Floresta das Sombras</p>
+    <p class="intro-lore">A guilda Pluma de Prata recebe um chamado urgente:<br>o miasma das trevas devora a Floresta de Letes.<br>Apenas um herói pode conter o Lich Primordial.</p>
+    <button id="btn-nova-aventura" class="btn-hero" type="button">
+      <span>Nova Aventura</span>
+      <i class="btn-arrow">▶</i>
+    </button>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     TELA 2 — SELEÇÃO DE CLASSE
+═══════════════════════════════════════════════════════════════ -->
+<section class="screen" id="screen-creation">
+  <header class="screen-header">
+    <p class="eyebrow">Guilda Pluma de Prata</p>
+    <h2>Escolha seu Herói</h2>
+    <p class="header-sub">Cada classe possui habilidades e estilo de jogo únicos</p>
+  </header>
+  <div id="class-grid" class="class-grid"></div>
+  <div class="name-modal hidden" id="name-modal">
+    <div class="name-modal-box">
+      <h3 id="name-modal-title">Nomeie seu personagem</h3>
+      <p id="name-modal-class"></p>
+      <input type="text" id="name-input" maxlength="20" placeholder="Nome do herói..." autocomplete="off" />
+      <div class="name-modal-actions">
+        <button id="btn-cancel-name" class="btn-ghost" type="button">Cancelar</button>
+        <button id="btn-confirm-name" class="btn-primary" type="button">Confirmar</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     TELA 3 — MAPA DA CAMPANHA
+═══════════════════════════════════════════════════════════════ -->
+<section class="screen" id="screen-map">
+  <header class="screen-header">
+    <p class="eyebrow">Jornada</p>
+    <h2>Mapa da Campanha</h2>
+  </header>
+  <div class="map-hud" id="map-hud">
+    <div class="hud-portrait" id="hud-portrait"></div>
+    <div class="hud-info">
+      <div class="hud-name-line">
+        <strong id="hud-name">—</strong>
+        <span id="hud-level" class="hud-level">Nível 1</span>
+      </div>
+      <div class="hud-hp-bar"><span id="hud-hp-fill"></span></div>
+      <div class="hud-stats-line">
+        <span id="hud-hp-text">HP 0/0</span>
+        <span id="hud-xp-text">XP 0</span>
+        <span id="hud-ca">CA 0</span>
+        <span id="hud-ouro">0 🪙</span>
+      </div>
+    </div>
+    <button id="btn-ficha" class="btn-ghost btn-sm" type="button">Ficha</button>
+  </div>
+  <div class="stage-map" id="stage-map"></div>
+  <div class="map-actions">
+    <button id="btn-avancar" class="btn-hero" type="button">
+      <span id="btn-avancar-text">Avançar para o próximo estágio</span>
+      <i class="btn-arrow">▶</i>
+    </button>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     TELA 4 — ENCONTRO
+═══════════════════════════════════════════════════════════════ -->
+<section class="screen" id="screen-encounter">
+  <div class="encounter-bg" id="encounter-bg"></div>
+  <div class="encounter-content">
+    <div class="encounter-header">
+      <span id="encounter-badge" class="encounter-badge">Inimigo</span>
+      <p id="encounter-stage" class="encounter-stage">Estágio 1 de 20</p>
+    </div>
+    <div class="encounter-enemy">
+      <img id="encounter-img" class="encounter-img" src="" alt="" />
+      <div class="encounter-info">
+        <h2 id="encounter-name">Inimigo</h2>
+        <p id="encounter-desc" class="encounter-desc"></p>
+        <div class="encounter-stats">
+          <span id="enc-hp">HP: 0</span>
+          <span id="enc-ca">CA: 0</span>
+          <span id="enc-nd">ND: 0</span>
+          <span id="enc-ataque">Atq: —</span>
+        </div>
+      </div>
+    </div>
+    <div class="encounter-speech hidden" id="encounter-speech">
+      <div class="speech-bubble">
+        <p id="encounter-fala"></p>
+      </div>
+    </div>
+    <button id="btn-iniciar-combate" class="btn-hero btn-danger" type="button">
+      <span>Entrar em Combate</span>
+      <i class="btn-arrow">⚔</i>
+    </button>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     TELA 5 — COMBATE (layout duas colunas)
+═══════════════════════════════════════════════════════════════ -->
+<section class="screen" id="screen-combat">
+  <div class="combat-split">
+
+    <!-- COLUNA ESQUERDA: personagens + habilidades -->
+    <div class="combat-left">
+
+      <!-- Cabeçalho -->
+      <div class="combat-header">
+        <span id="combat-stage-label" class="combat-stage-label">Estágio 1 · Combate</span>
+        <button id="btn-ficha-combat" class="btn-ghost btn-sm" type="button">📋 Ficha</button>
+      </div>
+
+      <!-- Arena: personagens lado a lado -->
+      <div class="combat-arena">
+
+        <!-- Jogador -->
+        <div class="arena-side arena-player">
+          <img id="combat-player-img" class="arena-img player-img" src="" alt="" />
+          <div class="arena-plate player-plate">
+            <strong id="combat-player-name">—</strong>
+            <span id="combat-player-class" class="arena-class">—</span>
+            <div class="arena-hp-bar">
+              <span id="combat-player-hp-fill"></span>
+            </div>
+            <span id="combat-player-hp" class="arena-hp-text">HP 0/0</span>
+          </div>
+        </div>
+
+        <!-- Centro: feedback + timer -->
+        <div class="arena-center">
+          <div class="arena-vs">⚔</div>
+          <div id="feedback" class="feedback neutro">Aguardando...</div>
+          <div id="auto-end-bar" class="auto-end-bar hidden">
+            <div id="auto-end-fill" class="auto-end-fill"></div>
+            <span id="auto-end-label" class="auto-end-label">Encerrando turno...</span>
+          </div>
+        </div>
+
+        <!-- Inimigo -->
+        <div class="arena-side arena-enemy">
+          <img id="combat-enemy-img" class="arena-img enemy-img" src="" alt="" />
+          <div class="arena-plate enemy-plate">
+            <strong id="combat-enemy-name">—</strong>
+            <span id="combat-enemy-cat" class="arena-class">—</span>
+            <div class="arena-hp-bar">
+              <span id="combat-enemy-hp-fill"></span>
+            </div>
+            <span id="combat-enemy-hp" class="arena-hp-text">HP 0/0</span>
+            <small id="combat-enemy-ca" class="arena-ca">CA 0</small>
+          </div>
+        </div>
+
+      </div><!-- /combat-arena -->
+
+      <!-- Status rápido (recursos) -->
+      <div class="combat-status-bar">
+        <span id="cb-slots" class="hidden">🔮 Slots: —</span>
+        <span id="cb-cura" class="hidden">🙏 Cura: 0</span>
+        <span id="cb-surto" class="hidden">⚡ Surto: 0</span>
+        <span id="cb-pocoes">🧪 0</span>
+        <span id="cb-turno-principal" class="turno-badge turno-livre">Ação ✓</span>
+        <span id="cb-turno-bonus" class="turno-badge turno-livre">Bônus ✓</span>
+      </div>
+
+      <!-- Grade de habilidades -->
+      <div class="actions-grid">
+
+        <!-- AÇÕES PRINCIPAIS -->
+        <div class="actions-section">
+          <h4 class="actions-label">⚔ Ação Principal</h4>
+          <div class="actions-row" id="actions-main">
+            <!-- Guerreiro -->
+            <button class="btn-action guerreiro" data-action="atacar" data-tipo="principal" type="button">
+              <span class="btn-icon">⚔</span><span class="btn-label">Ataque</span>
+              <small class="btn-hint">1d8 físico</small>
+            </button>
+            <button class="btn-action guerreiro" data-action="golpe" data-tipo="principal" type="button">
+              <span class="btn-icon">🗡</span><span class="btn-label">Golpe Preciso</span>
+              <small class="btn-hint">+1d6 / desvantagem</small>
+            </button>
+            <!-- Paladino -->
+            <button class="btn-action paladino" data-action="atacar" data-tipo="principal" type="button">
+              <span class="btn-icon">⚔</span><span class="btn-label">Ataque</span>
+              <small class="btn-hint">1d8 físico</small>
+            </button>
+            <button class="btn-action paladino smite-btn" data-action="smite" data-tipo="principal" type="button">
+              <span class="btn-icon">✨</span><span class="btn-label">Destruição Divina</span>
+              <small class="btn-hint">+2d8 radiante [Slot]</small>
+            </button>
+            <!-- Mago -->
+            <button class="btn-action mago" data-action="rajada" data-tipo="principal" type="button">
+              <span class="btn-icon">💫</span><span class="btn-label">Rajada Arcana</span>
+              <small class="btn-hint">1d10 arcano</small>
+            </button>
+            <button class="btn-action mago" data-action="gelo" data-tipo="principal" type="button">
+              <span class="btn-icon">❄</span><span class="btn-label">Raio de Gelo</span>
+              <small class="btn-hint" id="hint-gelo">1d8 frio</small>
+            </button>
+            <button class="btn-action mago nivel6" data-action="fogo" data-tipo="principal" type="button">
+              <span class="btn-icon">🔥</span><span class="btn-label">Raio de Fogo</span>
+              <small class="btn-hint" id="hint-fogo">1d10 fogo [Nv.6]</small>
+            </button>
+            <button class="btn-action mago slot-btn" data-action="misil" data-tipo="principal" type="button">
+              <span class="btn-icon">🎯</span><span class="btn-label">Mísseis Mágicos</span>
+              <small class="btn-hint">3d4+3 garantido [Slot]</small>
+            </button>
+            <button class="btn-action mago slot-btn" data-action="paralisar" data-tipo="principal" type="button">
+              <span class="btn-icon">⛓</span><span class="btn-label">Paralisar</span>
+              <small class="btn-hint">1 turno [Slot]</small>
+            </button>
+            <button class="btn-action mago" data-action="laminas" data-tipo="principal" type="button">
+              <span class="btn-icon">🛡</span><span class="btn-label">Proteção c/ Lâminas</span>
+              <small class="btn-hint">Resistência física</small>
+            </button>
+          </div>
+        </div>
+
+        <!-- AÇÕES BÔNUS -->
+        <div class="actions-section">
+          <h4 class="actions-label">✦ Ação Bônus</h4>
+          <div class="actions-row" id="actions-bonus">
+            <!-- Guerreiro -->
+            <button class="btn-action guerreiro" data-action="folego" data-tipo="bonus" type="button">
+              <span class="btn-icon">💪</span><span class="btn-label">Retomar o Fôlego</span>
+              <small class="btn-hint">1d10+Nível HP</small>
+            </button>
+            <button class="btn-action guerreiro surto-btn" data-action="surto" data-tipo="bonus" type="button">
+              <span class="btn-icon">⚡</span><span class="btn-label">Surto de Ação</span>
+              <small class="btn-hint" id="hint-surto">1 uso</small>
+            </button>
+            <!-- Paladino -->
+            <button class="btn-action paladino" data-action="cura" data-tipo="bonus" type="button">
+              <span class="btn-icon">🙏</span><span class="btn-label">Cura pelas Mãos</span>
+              <small class="btn-hint" id="hint-cura">Reserva: 0</small>
+            </button>
+            <!-- Mago -->
+            <button class="btn-action mago" data-action="certeiro" data-tipo="bonus" type="button">
+              <span class="btn-icon">👁</span><span class="btn-label">Ataque Certeiro</span>
+              <small class="btn-hint">Vantagem próx. atq</small>
+            </button>
+            <!-- Universal -->
+            <button class="btn-action todos" data-action="pocao" data-tipo="bonus" type="button">
+              <span class="btn-icon">🧪</span><span class="btn-label">Usar Poção</span>
+              <small class="btn-hint" id="hint-pocao">0 poções</small>
+            </button>
+          </div>
+        </div>
+
+        <!-- ENCERRAR TURNO -->
+        <div class="actions-section">
+          <div class="actions-row">
+            <button id="btn-encerrar" class="btn-action btn-encerrar" data-action="encerrar" data-tipo="encerrar" type="button">
+              <span class="btn-icon">→</span><span class="btn-label">Encerrar Turno</span>
+              <small class="btn-hint">Passa para o inimigo</small>
+            </button>
+          </div>
+        </div>
+
+      </div><!-- /actions-grid -->
+    </div><!-- /combat-left -->
+
+    <!-- COLUNA DIREITA: log de combate -->
+    <div class="combat-right">
+      <div class="log-header">
+        <h3 class="log-title">📜 Registro de Combate</h3>
+        <span id="cb-hp" class="log-hp-tag">HP 0/0</span>
+      </div>
+      <div class="combat-log" id="combat-log"></div>
+    </div><!-- /combat-right -->
+
+  </div><!-- /combat-split -->
+
+  <!-- Ficha lateral (slide-in) -->
+  <div class="side-sheet hidden" id="side-sheet">
+    <button class="sheet-close" id="btn-close-sheet" type="button">✕</button>
+    <h3>Ficha do Personagem</h3>
+    <div id="sheet-content"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     TELA 6 — EVENTO (descanso / cutscene)
+═══════════════════════════════════════════════════════════════ -->
+<section class="screen" id="screen-event">
+  <div class="event-content">
+    <div class="event-icon" id="event-icon">🏕</div>
+    <h2 id="event-title">Evento</h2>
+    <p id="event-desc" class="event-desc"></p>
+    <div class="event-actions">
+      <button id="btn-descansar" class="btn-primary hidden" type="button">Descansar</button>
+      <button id="btn-continuar" class="btn-primary" type="button">Continuar →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     TELA 7 — VITÓRIA DE ESTÁGIO
+═══════════════════════════════════════════════════════════════ -->
+<section class="screen" id="screen-victory">
+  <div class="victory-content">
+    <div class="victory-badge">✔</div>
+    <h2 id="victory-title">Estágio Concluído!</h2>
+    <div class="victory-xp">
+      <span class="xp-label">XP Ganho</span>
+      <span id="victory-xp-value" class="xp-value">+50</span>
+    </div>
+    <div class="victory-level hidden" id="victory-levelup">
+      <span class="levelup-glow">⬆</span>
+      <strong id="victory-level-text">Nível 2!</strong>
+    </div>
+    <div class="victory-status">
+      <span id="victory-hp">HP: 0/0</span>
+      <span id="victory-nivel">Nível 1</span>
+      <span id="victory-xp-total">XP: 0</span>
+    </div>
+    <p class="victory-rest" id="victory-rest-text"></p>
+    <!-- Log do combate encerrado -->
+    <div class="victory-log" id="victory-log"></div>
+    <button id="btn-proximo-estagio" class="btn-hero" type="button">
+      <span>Próximo Estágio</span>
+      <i class="btn-arrow">▶</i>
+    </button>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     TELA 8 — FIM (vitória final / derrota)
+═══════════════════════════════════════════════════════════════ -->
+<section class="screen" id="screen-final">
+  <div class="final-content">
+    <div class="final-emblem" id="final-emblem">★</div>
+    <h2 id="final-title">Fim da Jornada</h2>
+    <p id="final-result" class="final-result"></p>
+    <div class="final-stats">
+      <article><span>Nível Final</span><strong id="final-nivel">—</strong></article>
+      <article><span>Inimigos Derrotados</span><strong id="final-kills">—</strong></article>
+      <article><span>Estágio Alcançado</span><strong id="final-estagio">—</strong></article>
+    </div>
+    <div class="final-caminhos">
+      <h3>Percurso</h3>
+      <ul id="final-paths"></ul>
+    </div>
+    <button id="btn-reiniciar" class="btn-hero" type="button">
+      <span>Nova Aventura</span>
+      <i class="btn-arrow">↺</i>
+    </button>
+  </div>
+</section>
+
+<!-- Toasts -->
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+<script src="./app.js"></script>
+</body>
+</html>
